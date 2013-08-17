@@ -226,8 +226,13 @@ NSString * const kTrackEventVideoComplete = @"Video Complete";
     [self syncPlayPauseButtons];
     
     if (playInFullScreen) {
-        self.isAlwaysFullscreen = YES;
+//        self.isAlwaysFullscreen = YES;
         [self launchFullScreen];
+    }else if (CGRectEqualToRect(_videoPlayerView.frame, CGRectZero)){
+        CGFloat lWidth = 200;
+        CGFloat lHeigth = 200;
+        
+        _videoPlayerView.frame = CGRectMake(self.videoPlayerView.superview.bounds.size.width / 2 - lWidth / 2, self.videoPlayerView.superview.bounds.size.height / 2 - lHeigth / 2, lWidth, lHeigth);
     }
 }
 
@@ -300,20 +305,21 @@ NSString * const kTrackEventVideoComplete = @"Video Complete";
         }
         
         [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:self.fullscreenViewController animated:YES completion:^{
-            if (self.isAlwaysFullscreen) {
-                self.videoPlayerView.frame = CGRectMake(self.videoPlayerView.superview.bounds.size.width / 2, self.videoPlayerView.superview.bounds.size.height / 2, 0, 0);
-                self.previousBounds = CGRectMake(self.videoPlayerView.superview.bounds.size.width / 2, self.videoPlayerView.superview.bounds.size.height / 2, 0, 0);
-                [self.videoPlayerView setCenter:CGPointMake( self.videoPlayerView.superview.bounds.size.width / 2, self.videoPlayerView.superview.bounds.size.height / 2)];
-                [UIView animateWithDuration:0.25f
-                                      delay:0.0f
-                                    options:UIViewAnimationCurveLinear
-                                 animations:^{
-                                     self.videoPlayerView.alpha = 1.0;
-                                 }
-                                 completion:nil];
-                
-                self.videoPlayerView.frame = self.videoPlayerView.superview.bounds;
-            }
+            self.videoPlayerView.frame = CGRectMake(self.videoPlayerView.superview.bounds.size.width / 2, self.videoPlayerView.superview.bounds.size.height / 2, 0, 0);
+            CGFloat lWidth = 200;
+            CGFloat lHeigth = 200;
+            
+            self.previousBounds = CGRectMake(self.videoPlayerView.superview.bounds.size.width / 2 - lWidth / 2, self.videoPlayerView.superview.bounds.size.height / 2 - lHeigth / 2, lWidth, lHeigth);
+            [self.videoPlayerView setCenter:CGPointMake( self.videoPlayerView.superview.bounds.size.width / 2, self.videoPlayerView.superview.bounds.size.height / 2)];
+            [UIView animateWithDuration:0.25f
+                                  delay:0.0f
+                                options:UIViewAnimationCurveLinear
+                             animations:^{
+                                 self.videoPlayerView.alpha = 1.0;
+                             }
+                             completion:nil];
+            
+            self.videoPlayerView.frame = self.videoPlayerView.superview.bounds;
             
             if (self.topView) {
                 self.topView.frame = CGRectMake(0, 0, self.videoPlayerView.frame.size.width, self.topView.frame.size.height);
@@ -350,6 +356,8 @@ NSString * const kTrackEventVideoComplete = @"Video Complete";
                                  if (showShareOptions) {
                                      [self presentShareOptions];
                                  }
+                                 [_videoPlayer pause];
+                                 [_videoPlayer seekToTime:kCMTimeZero];
                                  
                                  [self.videoPlayerView removeFromSuperview];
                              }];
@@ -384,6 +392,7 @@ NSString * const kTrackEventVideoComplete = @"Video Complete";
             }
         }];
     }
+    NSLog(@"self.videoPlayerView.frame = %@", NSStringFromCGRect(self.videoPlayerView.frame));
 }
 
 - (void)fullScreenButtonHandler

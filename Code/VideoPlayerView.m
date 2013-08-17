@@ -134,7 +134,7 @@
                                  constrainedToSize:CGSizeMake(insetBounds.size.width, CGFLOAT_MAX)
                                      lineBreakMode:UILineBreakModeWordWrap];
         
-        self.autoresizingMask = UIViewAutoresizingNone;
+        self.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
         
         [_titleLabel setFrame:CGRectMake(insetBounds.origin.x + self.padding,
                                          insetBounds.origin.y,
