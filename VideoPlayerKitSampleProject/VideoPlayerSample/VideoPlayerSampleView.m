@@ -7,6 +7,7 @@
 @property (nonatomic, weak) UIView *topView;
 @property (nonatomic, weak) UIView *videoPlayerView;
 @property (nonatomic, readwrite, strong) UIButton *playButton;
+@property (nonatomic, readwrite, strong) UIButton *playFullScreenButton;
 
 @end
 
@@ -19,6 +20,13 @@
         [self.playButton setTitle:@"Play Video" forState:UIControlStateNormal];
         [self addSubview:self.playButton];
         self.backgroundColor = [UIColor whiteColor];
+        
+        self.playFullScreenButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [self.playFullScreenButton setTitle:@"Play Fullscreen Video" forState:UIControlStateNormal];
+        [self addSubview:self.playFullScreenButton];
+        self.backgroundColor = [UIColor whiteColor];
+
+        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     }
     
     return self;
@@ -28,8 +36,13 @@
 {
     [super layoutSubviews];
     CGRect bounds = self.bounds;
+    self.playFullScreenButton.frame = CGRectMake((bounds.size.width - 200)/2.0,
+                                                 (bounds.size.height - 100)/2.0,
+                                                 200,
+                                                 50);
+    
     self.playButton.frame = CGRectMake((bounds.size.width - 100)/2.0,
-                                       (bounds.size.height - 50)/2.0,
+                                       self.playFullScreenButton.frame.origin.y + self.playFullScreenButton.frame.size.height + 10,
                                        100,
                                        50);
     
