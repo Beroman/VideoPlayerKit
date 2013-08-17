@@ -37,6 +37,7 @@
     self.videoPlayerSampleView = [[VideoPlayerSampleView alloc] initWithTopView:nil videoPlayerView:nil];
     [self.videoPlayerSampleView.playButton addTarget:self action:@selector(playVideoMinimized) forControlEvents:UIControlEventTouchUpInside];
     [self.videoPlayerSampleView.playFullScreenButton addTarget:self action:@selector(playVideoFullScreen) forControlEvents:UIControlEventTouchUpInside];
+    [self.videoPlayerSampleView.removeVideoViewButton addTarget:self action:@selector(removeVideoViewFromSuperView) forControlEvents:UIControlEventTouchUpInside];
     [self setView:self.videoPlayerSampleView];
 }
 
@@ -53,11 +54,10 @@
         self.videoPlayerViewController.allowPortraitFullscreen = YES;
     }
     
-    self.videoPlayerViewController.view.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
+    self.videoPlayerSampleView.videoPlayerView = self.videoPlayerViewController.view;
     [self.view addSubview:self.videoPlayerViewController.view];
     
     [self.videoPlayerViewController playVideoWithTitle:@"Title" URL:url videoID:nil shareURL:nil isStreaming:NO playInFullScreen:pFullScreen];
-    
 }
 
 - (void)playVideoMinimized{
@@ -66,6 +66,14 @@
 
 - (void)playVideoFullScreen{
     [self playVideoFullScreen:YES];
+}
+
+- (void)removeVideoViewFromSuperView{
+    if (self.videoPlayerSampleView.videoPlayerView){
+        [self.videoPlayerSampleView.videoPlayerView removeFromSuperview];
+    }
+    [self.videoPlayerViewController.videoPlayer pause];
+    [self.videoPlayerViewController.videoPlayer seekToTime:kCMTimeZero];
 }
 
 - (void)viewDidLoad
@@ -83,6 +91,10 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
     return YES;
+}
+
+- (void)setFullScreenToggled:(BOOL)fullScreenToggled{
+    [self.videoPlayerSampleView bringSubviewToFront:self.videoPlayerSampleView.removeVideoViewButton];
 }
 
 @end
