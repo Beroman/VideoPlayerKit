@@ -18,14 +18,6 @@
         
         // Optional Top View
         _topView = [[UIView alloc] init];
-//        UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//        button.frame = CGRectMake(0, 0, 200, 40.0);
-//        [button addTarget:self
-//                   action:@selector(fullScreen)
-//         forControlEvents:UIControlEventTouchDown];
-//        
-//        [button setTitle:@"Full Screen!" forState:UIControlStateNormal];
-//        [_topView addSubview:button];
     }
     return self;
 }
